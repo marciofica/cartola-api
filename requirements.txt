@@ -1,0 +1,6 @@
+Django==2.1
+djangorestframework==3.8.2
+model-mommy==1.6.0
+pytz==2018.5
+six==1.11.0
+users==1.0.dev0
