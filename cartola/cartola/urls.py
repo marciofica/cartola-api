@@ -24,6 +24,12 @@ router.register(r'clubes', views.ClubeViewSet)
 router.register(r'times', views.TimeViewSet)
 router.register(r'users', views.UserViewSet)
 router.register(r'jogadores', views.JogadorViewSet)
+router.register(r'partidas', views.PartidaViewSet)
+router.register(r'indicadores', views.IndicadorViewSet)
+router.register(r'partidas-confirmacao', views.PartidaConfirmacaoViewSet)
+router.register(r'partidas-gols', views.PartidaGolViewSet)
+router.register(r'partidas-indicadores', views.PartidaIndicadorViewSet)
+router.register(r'partidas-notas', views.PartidaNotaViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
