@@ -47,7 +47,7 @@ class Jogador(models.Model):
         verbose_name_plural = 'Jogadores'
 
     def __str__(self):
-        return self.usuario.fisrt_name + " " + self.usuario.last_name
+        return self.usuario.first_name + " " + self.usuario.last_name
 
 
 class Indicador(models.Model):
@@ -77,7 +77,7 @@ class Partida(models.Model):
         verbose_name_plural = 'Partidas'
 
     def __str__(self):
-        return self.dh_partida
+        return self.descricao
 
 
 class PartidaConfirmacao(models.Model):
@@ -91,7 +91,7 @@ class PartidaConfirmacao(models.Model):
         verbose_name_plural = 'PartidasConfirmacoes'
 
     def __str__(self):
-        return self.partida.dh_partida + " - " + self.jogador.apelido + " - " + self.dh_confirmacao
+        return self.jogador.apelido
 
 
 class PartidaGol(models.Model):
@@ -105,7 +105,7 @@ class PartidaGol(models.Model):
         verbose_name_plural = 'PartidaGols'
 
     def __str__(self):
-        return self.partida.dh_partida + " - " + self.jogador.apelido + " - " + self.gols
+        return self.jogador.apelido
 
 
 class PartidaIndicador(models.Model):
@@ -119,7 +119,7 @@ class PartidaIndicador(models.Model):
         verbose_name_plural = 'PartidaIndicadores'
 
     def __str__(self):
-        return self.gols + " - " + self.partida.dh_partida + " - " + self.jogador.apelido
+        return self.gols + " - " + self.jogador.apelido
 
 
 class PartidaNota(models.Model):
@@ -133,4 +133,4 @@ class PartidaNota(models.Model):
         verbose_name_plural = 'PartidaNota'
 
     def __str__(self):
-        return self.nota + " - " + self.partida.dh_partida + " - " + self.jogador.apelido
+        return self.nota + " - " + self.jogador.apelido
