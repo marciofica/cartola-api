@@ -34,5 +34,6 @@ router.register(r'partidas-notas', views.PartidaNotaViewSet)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^sign_up/$', views.SignUp.as_view(), name="sign_up"),
 ]

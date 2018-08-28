@@ -1,8 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 
+from .permissions import IsAuthenticatedOrCreate
 from .serializers import ClubeSerializer, TimeSerializer, UserSerializer, JogadorSerializer, PartidaSerializer, \
     IndicadorSerializer, PartidaConfirmacaoSerializer, PartidaGolSerializer, PartidaIndicadorSerializer, \
-    PartidaNotaSerializer
+    PartidaNotaSerializer, SignUpSerializer
 from .models import Clube, Time, Jogador, Partida, Indicador, PartidaConfirmacao, PartidaGol, PartidaIndicador, \
     PartidaNota
 from django.contrib.auth.models import User
@@ -56,3 +57,9 @@ class PartidaIndicadorViewSet(viewsets.ModelViewSet):
 class PartidaNotaViewSet(viewsets.ModelViewSet):
     queryset = PartidaNota.objects.all()
     serializer_class = PartidaNotaSerializer
+
+
+class SignUp(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = SignUpSerializer
+    permission_classes = (IsAuthenticatedOrCreate,)

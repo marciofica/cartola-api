@@ -62,3 +62,16 @@ class PartidaNotaSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartidaNota
         fields = '__all__'
+
+
+class SignUpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password')
+        write_only_fields = ('password',)
+
+    def create(self, validated_data):
+        user = super().create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user

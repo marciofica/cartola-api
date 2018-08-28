@@ -77,7 +77,7 @@ class Partida(models.Model):
         verbose_name_plural = 'Partidas'
 
     def __str__(self):
-        return self.descricao
+        return "Data da partida %s" % self.dh_partida.strftime('%d/%m/%Y %H:%M')
 
 
 class PartidaConfirmacao(models.Model):
