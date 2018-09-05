@@ -29,6 +29,14 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
+class UserLoggedViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(username=self.request.user)
+
+
 class PartidaViewSet(viewsets.ModelViewSet):
     queryset = Partida.objects.all().order_by('-dh_partida')
     serializer_class = PartidaSerializer
