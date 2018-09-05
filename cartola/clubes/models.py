@@ -11,6 +11,7 @@ class TipoGol(ChoiceEnum):
 class Clube(models.Model):
     nome = models.CharField(max_length=100)
     fundacao = models.DateField()
+    usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Clube'

@@ -9,6 +9,12 @@ class ClubeSerializer(serializers.ModelSerializer):
         model = Clube
         fields = ('id', 'nome', 'fundacao')
 
+    def create(self, validated_data):
+        clube = super().create(validated_data)
+        clube.usuario = self.request.user
+        clube.save()
+        return clube
+
 
 class TimeSerializer(serializers.ModelSerializer):
     class Meta:
