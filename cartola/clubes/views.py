@@ -13,6 +13,9 @@ class ClubeViewSet(viewsets.ModelViewSet):
     queryset = Clube.objects.all()
     serializer_class = ClubeSerializer
 
+    def get_queryset(self):
+        return Clube.objects.filter(usuario=self.request.user)
+
 
 class TimeViewSet(viewsets.ModelViewSet):
     queryset = Time.objects.all()

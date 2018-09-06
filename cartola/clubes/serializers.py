@@ -11,7 +11,7 @@ class ClubeSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         clube = super().create(validated_data)
-        clube.usuario = self.request.user
+        clube.usuario = self.context['request'].user
         clube.save()
         return clube
 
