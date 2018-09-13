@@ -3,9 +3,9 @@ from rest_framework import viewsets, generics
 from .permissions import IsAuthenticatedOrCreate
 from .serializers import ClubeSerializer, TimeSerializer, UserSerializer, JogadorSerializer, PartidaSerializer, \
     IndicadorSerializer, PartidaConfirmacaoSerializer, PartidaGolSerializer, PartidaIndicadorSerializer, \
-    PartidaNotaSerializer, SignUpSerializer
+    PartidaNotaSerializer, SignUpSerializer, JogadorClubeSerializer
 from .models import Clube, Time, Jogador, Partida, Indicador, PartidaConfirmacao, PartidaGol, PartidaIndicador, \
-    PartidaNota
+    PartidaNota, JogadorClube
 from django.contrib.auth.models import User
 
 
@@ -25,6 +25,11 @@ class TimeViewSet(viewsets.ModelViewSet):
 class JogadorViewSet(viewsets.ModelViewSet):
     queryset = Jogador.objects.all()
     serializer_class = JogadorSerializer
+
+
+class JogadorClubeViewSet(viewsets.ModelViewSet):
+    queryset = JogadorClube.objects.all()
+    serializer_class = JogadorClubeSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -36,7 +36,9 @@ class Time(models.Model):
 
 
 class Jogador(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    nome = models.CharField(max_length=150, null=True)
+    email = models.CharField(max_length=255, null=True)
     apelido = models.CharField(max_length=30)
     telefone = models.CharField(max_length=12, null=True)
     nota = models.DecimalField(max_digits=4, decimal_places=2, null=True)
@@ -48,7 +50,20 @@ class Jogador(models.Model):
         verbose_name_plural = 'Jogadores'
 
     def __str__(self):
-        return self.usuario.first_name + " " + self.usuario.last_name
+        return self.nome
+
+
+class JogadorClube(models.Model):
+    jogador = models.ForeignKey(Jogador, on_delete=models.CASCADE)
+    clube = models.ForeignKey(Clube, on_delete=models.PROTECT)
+    mensalista = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Jogador Clube'
+        verbose_name_plural = 'Jogadores Clubes'
+
+    def __str__(self):
+        return self.jogador.nome + " - " + self.clube.nome
 
 
 class Indicador(models.Model):

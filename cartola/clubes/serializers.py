@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Clube, Time, Jogador, Partida, Indicador, PartidaConfirmacao, PartidaGol, PartidaIndicador, \
-    PartidaNota
+    PartidaNota, JogadorClube
 from django.contrib.auth.models import User
 
 
@@ -25,6 +25,12 @@ class TimeSerializer(serializers.ModelSerializer):
 class JogadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jogador
+        fields = '__all__'
+
+
+class JogadorClubeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JogadorClube
         fields = '__all__'
 
 
