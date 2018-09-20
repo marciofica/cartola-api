@@ -22,22 +22,49 @@ class TimeSerializer(serializers.ModelSerializer):
         fields = ('id', 'clube', 'ano', 'nome', 'ativo')
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'username', 'email')
+
+    def create(self, validated_data):
+        print('usuario create')
+        return self
+
+    def update(self, instance, validated_data):
+        print('update')
+        return instance
+
+
 class JogadorSerializer(serializers.ModelSerializer):
+    usuario = UserSerializer(required=True)
+
     class Meta:
         model = Jogador
-        fields = '__all__'
+        fields = ('id', 'usuario', 'apelido', 'telefone', 'nota', 'posicao', 'numero_camisa')
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('usuario')
+        usuario = UserSerializer.create(UserSerializer(), validated_data=user_data)
+
+        jogador, created  = Jogador.objects.update_or_create(usuario=usuario,
+                                                             apelido=validated_data.pop('apelido'),
+                                                             telefone=validated_data.pop('telefone'),
+                                                             nota=validated_data.pop('nota'),
+                                                             posicao=validated_data.pop('posicao'),
+                                                             numero_camisa=validated_data.pop('numero_camisa'))
+
+        return jogador
+
+
+class JogadorReadSerializer(JogadorSerializer):
+    usuario = UserSerializer(read_only=True)
 
 
 class JogadorClubeSerializer(serializers.ModelSerializer):
     class Meta:
         model = JogadorClube
         fields = '__all__'
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('first_name', 'username', 'email')
 
 
 class PartidaSerializer(serializers.ModelSerializer):
