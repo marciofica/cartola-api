@@ -27,38 +27,28 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'first_name', 'username', 'email')
 
-    def create(self, validated_data):
-        print('usuario create')
-        return self
-
-    def update(self, instance, validated_data):
-        print('update')
-        return instance
-
 
 class JogadorSerializer(serializers.ModelSerializer):
-    usuario = UserSerializer(required=True)
+    apelido = serializers.CharField(source='jogador.apelido')
+    telefone = serializers.CharField(source='jogador.telefone')
+    nota = serializers.DecimalField(max_digits=4, decimal_places=2, source='jogador.nota')
+    posicao = serializers.CharField(source='jogador.posicao')
+    numero_camisa = serializers.IntegerField(source='jogador.numero_camisa')
+    clube_id = serializers.IntegerField(source='clube.id')
+    mensalista = serializers.BooleanField(source='clube.mensalista')
 
     class Meta:
-        model = Jogador
-        fields = ('id', 'usuario', 'apelido', 'telefone', 'nota', 'posicao', 'numero_camisa')
+        model = User
+        fields = ('id', 'first_name', 'username', 'email', 'apelido', 'telefone', 'nota', 'posicao', 'numero_camisa', 'clube_id', 'mensalista')
 
-    def create(self, validated_data):
-        user_data = validated_data.pop('usuario')
-        usuario = UserSerializer.create(UserSerializer(), validated_data=user_data)
-
-        jogador, created  = Jogador.objects.update_or_create(usuario=usuario,
-                                                             apelido=validated_data.pop('apelido'),
-                                                             telefone=validated_data.pop('telefone'),
-                                                             nota=validated_data.pop('nota'),
-                                                             posicao=validated_data.pop('posicao'),
-                                                             numero_camisa=validated_data.pop('numero_camisa'))
-
-        return jogador
-
-
-class JogadorReadSerializer(JogadorSerializer):
-    usuario = UserSerializer(read_only=True)
+    def save(self, **kwargs):
+        jogador = self.validated_data.pop('jogador')
+        clube = self.validated_data.pop('clube')
+        instance = super().save(**kwargs)
+        clubeModel = Clube.objects.get(pk=clube['id'])
+        jogadorModel, create = Jogador.objects.update_or_create(usuario=instance, defaults=jogador)
+        jogadorClube = JogadorClube.objects.update_or_create(jogador=jogadorModel, clube=clubeModel, defaults=clube)
+        return instance
 
 
 class JogadorClubeSerializer(serializers.ModelSerializer):
