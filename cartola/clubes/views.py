@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, filters
 
 from .permissions import IsAuthenticatedOrCreate
 from .serializers import ClubeSerializer, TimeSerializer, UserSerializer, JogadorSerializer, PartidaSerializer, \
@@ -25,6 +25,11 @@ class TimeViewSet(viewsets.ModelViewSet):
 class JogadorViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = JogadorSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('^first_name', '^username', '^email', '^jogador__apelido')
+
+    def get_queryset(self):
+        return User.objects.all().exclude(username__exact='admin')
 
 
 class JogadorClubeViewSet(viewsets.ModelViewSet):

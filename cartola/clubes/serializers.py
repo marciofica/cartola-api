@@ -31,23 +31,16 @@ class UserSerializer(serializers.ModelSerializer):
 class JogadorSerializer(serializers.ModelSerializer):
     apelido = serializers.CharField(source='jogador.apelido')
     telefone = serializers.CharField(source='jogador.telefone')
-    nota = serializers.DecimalField(max_digits=4, decimal_places=2, source='jogador.nota')
-    posicao = serializers.CharField(source='jogador.posicao')
-    numero_camisa = serializers.IntegerField(source='jogador.numero_camisa')
-    clube_id = serializers.IntegerField(source='clube.id')
-    mensalista = serializers.BooleanField(source='clube.mensalista')
+    data_nascimento = serializers.DateField(source='jogador.data_nascimento')
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'username', 'email', 'apelido', 'telefone', 'nota', 'posicao', 'numero_camisa', 'clube_id', 'mensalista')
+        fields = ('id', 'first_name', 'username', 'email', 'apelido', 'telefone', 'data_nascimento')
 
     def save(self, **kwargs):
         jogador = self.validated_data.pop('jogador')
-        clube = self.validated_data.pop('clube')
         instance = super().save(**kwargs)
-        clubeModel = Clube.objects.get(pk=clube['id'])
         jogadorModel, create = Jogador.objects.update_or_create(usuario=instance, defaults=jogador)
-        jogadorClube = JogadorClube.objects.update_or_create(jogador=jogadorModel, clube=clubeModel, defaults=clube)
         return instance
 
 

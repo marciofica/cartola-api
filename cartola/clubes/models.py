@@ -42,9 +42,8 @@ class Jogador(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.PROTECT, related_name='jogador')
     apelido = models.CharField(max_length=30)
     telefone = models.CharField(max_length=12, null=True)
-    nota = models.DecimalField(max_digits=4, decimal_places=2, null=True)
-    posicao = models.CharField(max_length=2, null=True)
-    numero_camisa = models.IntegerField(null=True)
+    data_nascimento = models.DateField(null=True)
+    data_inscricao = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         verbose_name = 'Jogador'
@@ -55,16 +54,20 @@ class Jogador(models.Model):
 
 
 class JogadorClube(models.Model):
-    jogador = models.ForeignKey(Jogador, on_delete=models.CASCADE)
-    clube = models.ForeignKey(Clube, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    clube = models.ForeignKey(Clube, on_delete=models.CASCADE)
     mensalista = models.BooleanField(default=True)
+    nota = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+    posicao = models.CharField(max_length=2, null=True)
+    numero_camisa = models.IntegerField(null=True)
+    data_membro = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         verbose_name = 'Jogador Clube'
         verbose_name_plural = 'Jogadores Clubes'
 
     def __str__(self):
-        return self.jogador.usuario.first_name + " - " + self.clube.nome
+        return self.usuario.first_name + " - " + self.clube.nome
 
 
 class Indicador(models.Model):
