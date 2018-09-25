@@ -3,7 +3,7 @@ from rest_framework import viewsets, generics, filters
 from .permissions import IsAuthenticatedOrCreate
 from .serializers import ClubeSerializer, TimeSerializer, UserSerializer, JogadorSerializer, PartidaSerializer, \
     IndicadorSerializer, PartidaConfirmacaoSerializer, PartidaGolSerializer, PartidaIndicadorSerializer, \
-    PartidaNotaSerializer, SignUpSerializer, JogadorClubeSerializer
+    PartidaNotaSerializer, SignUpSerializer, JogadorClubeSerializer, JogadorClubeReadSerializer
 from .models import Clube, Time, Jogador, Partida, Indicador, PartidaConfirmacao, PartidaGol, PartidaIndicador, \
     PartidaNota, JogadorClube
 from django.contrib.auth.models import User
@@ -34,7 +34,13 @@ class JogadorViewSet(viewsets.ModelViewSet):
 
 class JogadorClubeViewSet(viewsets.ModelViewSet):
     queryset = JogadorClube.objects.all()
-    serializer_class = JogadorClubeSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=clube__id',)
+
+    def get_serializer_class(self):
+        if self.request.method in 'GET':
+            return JogadorClubeReadSerializer
+        return JogadorClubeSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
