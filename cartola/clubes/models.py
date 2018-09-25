@@ -55,7 +55,7 @@ class Jogador(models.Model):
 
 class JogadorClube(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    clube = models.ForeignKey(Clube, on_delete=models.CASCADE)
+    clube = models.ForeignKey(Clube, on_delete=models.CASCADE, null=True)
     mensalista = models.BooleanField(default=True)
     nota = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     posicao = models.CharField(max_length=2, null=True)

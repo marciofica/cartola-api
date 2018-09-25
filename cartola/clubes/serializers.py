@@ -45,6 +45,9 @@ class JogadorSerializer(serializers.ModelSerializer):
 
 
 class JogadorClubeSerializer(serializers.ModelSerializer):
+    usuario = UserSerializer(read_only=True)
+    clube = ClubeSerializer(read_only=True)
+
     class Meta:
         model = JogadorClube
         fields = '__all__'
