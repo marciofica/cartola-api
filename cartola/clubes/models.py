@@ -41,8 +41,8 @@ class Time(models.Model):
 class Jogador(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.PROTECT, related_name='jogador')
     apelido = models.CharField(max_length=30)
-    telefone = models.CharField(max_length=12, null=True)
-    data_nascimento = models.DateField(null=True)
+    telefone = models.CharField(max_length=12, null=True, default=None)
+    data_nascimento = models.DateField(null=True, default=None)
     data_inscricao = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
@@ -65,6 +65,7 @@ class JogadorClube(models.Model):
     class Meta:
         verbose_name = 'Jogador Clube'
         verbose_name_plural = 'Jogadores Clubes'
+        unique_together = (('usuario', 'clube'),)
 
     def __str__(self):
         return self.usuario.first_name + " - " + self.clube.nome
