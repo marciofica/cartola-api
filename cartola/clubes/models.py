@@ -14,7 +14,7 @@ class TipoGol(ChoiceEnum):
 class Clube(models.Model):
     nome = models.CharField(max_length=100)
     fundacao = models.DateField()
-    usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Clube'
@@ -43,7 +43,7 @@ class Jogador(models.Model):
     apelido = models.CharField(max_length=30)
     telefone = models.CharField(max_length=12, null=True, default=None)
     data_nascimento = models.DateField(null=True, default=None)
-    data_inscricao = models.DateTimeField(auto_now_add=True, null=True)
+    data_inscricao = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Jogador'
@@ -54,13 +54,13 @@ class Jogador(models.Model):
 
 
 class JogadorClube(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    clube = models.ForeignKey(Clube, on_delete=models.CASCADE, null=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    clube = models.ForeignKey(Clube, on_delete=models.CASCADE)
     mensalista = models.BooleanField(default=True)
-    nota = models.DecimalField(max_digits=4, decimal_places=2, null=True)
-    posicao = models.CharField(max_length=2, null=True)
-    numero_camisa = models.IntegerField(null=True)
-    data_membro = models.DateTimeField(auto_now_add=True, null=True)
+    nota = models.DecimalField(max_digits=4, decimal_places=2, null=True, default=None)
+    posicao = models.CharField(max_length=2)
+    numero_camisa = models.IntegerField(null=True, default=None)
+    data_membro = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Jogador Clube'
@@ -85,6 +85,7 @@ class Indicador(models.Model):
 
 
 class Partida(models.Model):
+    clube = models.ForeignKey(Clube, on_delete=models.CASCADE)
     dh_partida = models.DateTimeField()
     local = models.CharField(max_length=150)
     descricao = models.TextField()

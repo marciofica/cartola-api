@@ -10,10 +10,8 @@ class ClubeSerializer(serializers.ModelSerializer):
         fields = ('id', 'nome', 'fundacao')
 
     def create(self, validated_data):
-        clube = super().create(validated_data)
-        clube.usuario = self.context['request'].user
-        clube.save()
-        return clube
+        validated_data['usuario'] = self.context['request'].user
+        return super().create(validated_data)
 
 
 class TimeSerializer(serializers.ModelSerializer):
@@ -59,6 +57,11 @@ class PartidaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partida
         fields = '__all__'
+
+
+class PartidaReadSerializer(PartidaSerializer):
+    time1 = TimeSerializer(read_only=True)
+    time2 = TimeSerializer(read_only=True)
 
 
 class IndicadorSerializer(serializers.ModelSerializer):
