@@ -20,6 +20,8 @@ class ClubeViewSet(viewsets.ModelViewSet):
 class TimeViewSet(viewsets.ModelViewSet):
     queryset = Time.objects.all()
     serializer_class = TimeSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('^nome', '=ano', '=ativo')
 
 
 class JogadorViewSet(viewsets.ModelViewSet):
