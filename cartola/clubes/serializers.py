@@ -58,6 +58,18 @@ class PartidaSerializer(serializers.ModelSerializer):
         model = Partida
         fields = '__all__'
 
+    def create(self, validated_data):
+        partida = super().create(validated_data)
+        jogadores = JogadorClube.objects.filter(clube=partida.clube)
+
+        for jogadorItem in jogadores:
+            jogadorDb = Jogador.objects.get(usuario=jogadorItem.usuario)
+            j = PartidaConfirmacao(partida=partida, jogador=jogadorDb, dh_confirmacao=None, confirmado=None)
+            j.save()
+
+        return partida
+
+
 
 class PartidaReadSerializer(PartidaSerializer):
     time1 = TimeSerializer(read_only=True)
