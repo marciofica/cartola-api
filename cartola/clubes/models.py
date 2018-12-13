@@ -104,7 +104,7 @@ class Partida(models.Model):
 
 class PartidaConfirmacao(models.Model):
     partida = models.ForeignKey(Partida, on_delete=models.CASCADE)
-    jogador = models.ForeignKey(Jogador, on_delete=models.CASCADE)
+    jogador = models.ForeignKey(Jogador, on_delete=models.CASCADE, related_name='jogador')
     dh_confirmacao = models.DateTimeField(null=True)
     confirmado = models.CharField(max_length=1, null=True)
 

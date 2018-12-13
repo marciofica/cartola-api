@@ -70,7 +70,6 @@ class PartidaSerializer(serializers.ModelSerializer):
         return partida
 
 
-
 class PartidaReadSerializer(PartidaSerializer):
     time1 = TimeSerializer(read_only=True)
     time2 = TimeSerializer(read_only=True)
@@ -85,7 +84,11 @@ class IndicadorSerializer(serializers.ModelSerializer):
 class PartidaConfirmacaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartidaConfirmacao
-        fields = '__all__'
+        fields = ('id', 'jogador', 'dh_confirmacao', 'confirmado',)
+
+
+class PartidaConfirmacaoReadSerializer(PartidaConfirmacaoSerializer):
+    jogador = JogadorSerializer(read_only=True)
 
 
 class PartidaGolSerializer(serializers.ModelSerializer):
