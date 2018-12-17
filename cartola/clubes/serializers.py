@@ -48,6 +48,14 @@ class JogadorClubeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class JogadorSerializer2(serializers.ModelSerializer):
+    jogadorClube = JogadorClubeSerializer(read_only=True)
+
+    class Meta:
+        model = Jogador
+        fields = ('id', 'usuario', 'apelido', 'telefone', 'data_nascimento', 'jogadorClube')
+
+
 class JogadorClubeReadSerializer(JogadorClubeSerializer):
     usuario = JogadorSerializer(read_only=True)
     clube = ClubeSerializer(read_only=True)
@@ -84,11 +92,11 @@ class IndicadorSerializer(serializers.ModelSerializer):
 class PartidaConfirmacaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartidaConfirmacao
-        fields = ('id', 'jogador', 'dh_confirmacao', 'confirmado',)
+        fields = ('id', 'jogador', 'partida', 'dh_confirmacao', 'confirmado',)
 
 
 class PartidaConfirmacaoReadSerializer(PartidaConfirmacaoSerializer):
-    jogador = JogadorSerializer(read_only=True)
+    jogador = JogadorSerializer2(read_only=True)
 
 
 class PartidaGolSerializer(serializers.ModelSerializer):
